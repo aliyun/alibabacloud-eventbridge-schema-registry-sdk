@@ -1,0 +1,48 @@
+{
+  "name": "@alicloud/schema-registry-sdk",
+  "version": "0.0.1",
+  "description": "",
+  "autoInstall": false,
+  "homepage": "",
+  "author": "",
+  "contributors": [],
+  "license": "MIT",
+  "main": "./dist/index.js",
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [],
+  "scripts": {
+    "start": "npm run watch",
+    "watch": "tsc -w",
+    "prebuild": "rimraf package-lock.json && rimraf dist && rimraf node_modules && npm i",
+    "build": "tsc",
+    "test:unit": "jest"
+  },
+  "dependencies": {
+    "@alicloud/credentials": "^2.2.5",
+    "@alicloud/eventbridge-util": "^1.0.0",
+    "@alicloud/pop-core": "1.7.10",
+    "@alicloud/tea-typescript": "^1.8.0",
+    "@alicloud/tea-util": "^1.4.5",
+    "ajv": "^7.1.0",
+    "avsc": ">= 5.4.13 < 6",
+    "uuid-parse": "^1.1.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.2.5",
+    "@types/node": "^14.0.23",
+    "esbuild": "^0.13.8",
+    "jest": "^29.3.1",
+    "rimraf": "^3.0.2",
+    "ts-jest": "^29.0.3",
+    "ts-node": "^8.10.2",
+    "typescript": "^4.4.2"
+  },
+  "bundleDependencies": [
+    "@alicloud/credentials",
+    "@alicloud/eventbridge-util",
+    "@alicloud/tea-typescript",
+    "@alicloud/tea-util"
+  ]
+}
