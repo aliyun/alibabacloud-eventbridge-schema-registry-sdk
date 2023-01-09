@@ -4,6 +4,12 @@
 import SchemaRegistry from '@alicloud/schema-registry-sdk';
 
 const groupId = 'avro-schema-group';
+// From an avsc file
+// const schemaFromAVSC = await readAVSCAsync(path.join(__dirname, '.path/to/schema.avsc'));
+
+// From an avdl file
+// const schemaFromAVDL = await avdlToAVSCAsync('path/to/protocol.avdl');
+
 const schema = `
   {
     "type": "record",

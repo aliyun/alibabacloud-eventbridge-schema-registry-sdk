@@ -15,7 +15,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.EventbridgeApiResponseError = exports.EventbridgeSchemaRegistryValidationError = exports.EventbridgeSchemaRegistryArgumentError = void 0;
+exports.EventbridgeSchemaRegistryInvalidSchemaError = exports.EventbridgeApiResponseError = exports.EventbridgeSchemaRegistryValidationError = exports.EventbridgeSchemaRegistryArgumentError = exports.EventbridgeSchemaRegistryError = void 0;
 var EventbridgeSchemaRegistryError = /** @class */ (function (_super) {
     __extends(EventbridgeSchemaRegistryError, _super);
     function EventbridgeSchemaRegistryError(error) {
@@ -25,6 +25,15 @@ var EventbridgeSchemaRegistryError = /** @class */ (function (_super) {
     }
     return EventbridgeSchemaRegistryError;
 }(Error));
+exports.EventbridgeSchemaRegistryError = EventbridgeSchemaRegistryError;
+var EventbridgeSchemaRegistryInvalidSchemaError = /** @class */ (function (_super) {
+    __extends(EventbridgeSchemaRegistryInvalidSchemaError, _super);
+    function EventbridgeSchemaRegistryInvalidSchemaError() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return EventbridgeSchemaRegistryInvalidSchemaError;
+}(EventbridgeSchemaRegistryError));
+exports.EventbridgeSchemaRegistryInvalidSchemaError = EventbridgeSchemaRegistryInvalidSchemaError;
 var EventbridgeApiResponseError = /** @class */ (function (_super) {
     __extends(EventbridgeApiResponseError, _super);
     function EventbridgeApiResponseError() {
@@ -51,4 +60,4 @@ var EventbridgeSchemaRegistryValidationError = /** @class */ (function (_super) 
     return EventbridgeSchemaRegistryValidationError;
 }(EventbridgeSchemaRegistryError));
 exports.EventbridgeSchemaRegistryValidationError = EventbridgeSchemaRegistryValidationError;
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiZXJyb3JzLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vc3JjL2Vycm9ycy50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7Ozs7Ozs7QUFBQTtJQUE2QyxrREFBSztJQUM5Qyx3Q0FBWSxLQUFVO1FBQXRCLFlBQ0Usa0JBQU0sS0FBSyxDQUFDLE9BQU8sSUFBSSxLQUFLLENBQUMsU0FFOUI7UUFEQyxLQUFJLENBQUMsSUFBSSxHQUFHLEtBQUksQ0FBQyxXQUFXLENBQUMsSUFBSSxDQUFBOztJQUNuQyxDQUFDO0lBQ0gscUNBQUM7QUFBRCxDQUFDLEFBTEgsQ0FBNkMsS0FBSyxHQUsvQztBQUNEO0lBQTBDLCtDQUE4QjtJQUF4RTs7SUFBMEUsQ0FBQztJQUFELGtDQUFDO0FBQUQsQ0FBQyxBQUEzRSxDQUEwQyw4QkFBOEIsR0FBRztBQWN2RSxrRUFBMkI7QUFiL0I7SUFBcUQsMERBQThCO0lBQW5GOztJQUFxRixDQUFDO0lBQUQsNkNBQUM7QUFBRCxDQUFDLEFBQXRGLENBQXFELDhCQUE4QixHQUFHO0FBV2xGLHdGQUFzQztBQVYxQztJQUF1RCw0REFBOEI7SUFHbkYsa0RBQVksS0FBVSxFQUFFLEtBQWlCO1FBQXpDLFlBQ0Usa0JBQU0sS0FBSyxDQUFDLFNBRWI7UUFEQyxLQUFJLENBQUMsS0FBSyxHQUFHLEtBQUssQ0FBQTs7SUFDcEIsQ0FBQztJQUNILCtDQUFDO0FBQUQsQ0FBQyxBQVBELENBQXVELDhCQUE4QixHQU9wRjtBQUlHLDRGQUF3QyJ9
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiZXJyb3JzLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vc3JjL2Vycm9ycy50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7Ozs7Ozs7QUFBQTtJQUE2QyxrREFBSztJQUNoRCx3Q0FBWSxLQUFVO1FBQXRCLFlBQ0Usa0JBQU0sS0FBSyxDQUFDLE9BQU8sSUFBSSxLQUFLLENBQUMsU0FFOUI7UUFEQyxLQUFJLENBQUMsSUFBSSxHQUFHLEtBQUksQ0FBQyxXQUFXLENBQUMsSUFBSSxDQUFBOztJQUNuQyxDQUFDO0lBQ0gscUNBQUM7QUFBRCxDQUFDLEFBTEQsQ0FBNkMsS0FBSyxHQUtqRDtBQWVDLHdFQUE4QjtBQWJoQztJQUEwRCwrREFBOEI7SUFBeEY7O0lBQTJGLENBQUM7SUFBRCxrREFBQztBQUFELENBQUMsQUFBNUYsQ0FBMEQsOEJBQThCLEdBQUk7QUFpQjFGLGtHQUEyQztBQWhCN0M7SUFBMEMsK0NBQThCO0lBQXhFOztJQUEyRSxDQUFDO0lBQUQsa0NBQUM7QUFBRCxDQUFDLEFBQTVFLENBQTBDLDhCQUE4QixHQUFJO0FBZTFFLGtFQUEyQjtBQWQ3QjtJQUFxRCwwREFBOEI7SUFBbkY7O0lBQXNGLENBQUM7SUFBRCw2Q0FBQztBQUFELENBQUMsQUFBdkYsQ0FBcUQsOEJBQThCLEdBQUk7QUFZckYsd0ZBQXNDO0FBWHhDO0lBQXVELDREQUE4QjtJQUduRixrREFBWSxLQUFVLEVBQUUsS0FBaUI7UUFBekMsWUFDRSxrQkFBTSxLQUFLLENBQUMsU0FFYjtRQURDLEtBQUksQ0FBQyxLQUFLLEdBQUcsS0FBSyxDQUFBOztJQUNwQixDQUFDO0lBQ0gsK0NBQUM7QUFBRCxDQUFDLEFBUEQsQ0FBdUQsOEJBQThCLEdBT3BGO0FBS0MsNEZBQXdDIn0=

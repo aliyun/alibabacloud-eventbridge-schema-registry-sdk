@@ -1,0 +1,11 @@
+@namespace("com.org.domain.examples")
+protocol MyProtocol {
+  record Picture {
+    string url;
+  }
+
+  record Event {
+    string name;
+    union {null, Picture} picture = null;
+  }
+}

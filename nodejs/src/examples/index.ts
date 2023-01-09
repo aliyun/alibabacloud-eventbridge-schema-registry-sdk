@@ -1,17 +1,29 @@
-import { SchemaRegistry } from '../index';
-import { SchemaType } from '../@types';
-(async () => {
-  // const uuid = 'cccc8b3a-4ad4-4e3f-ab0a-520bbf7bc3a3';
-  const groupId = 'avro-schema-group';
+import path from 'path';
+import { SchemaRegistry, SchemaType, readAVSCAsync, avdlToAVSCAsync } from '../index';
 
-  const schema = `
-  {
-    "type": "record",
-    "name": "RandomTest",
-    "namespace": "examples",
-    "fields": [{ "type": "string", "name": "fullName" },{ "type": "string", "name": "school" }]
-  }
-`
+(async () => {
+
+
+  // From an avdl file
+  const schemaFromAVDL = await avdlToAVSCAsync(path.join(__dirname, '../../fixtures/avdl/schema.avdl'));
+  console.log(schemaFromAVDL);
+
+
+  // From an avdl file
+  const schemaFromAVSC = await readAVSCAsync(path.join(__dirname, '../../fixtures/avsc/schema.avsc'));
+  console.log(schemaFromAVSC);
+
+
+  const schemaFromJSON = `
+    {
+      "type": "record",
+      "name": "RandomTest",
+      "namespace": "examples",
+      "fields": [{ "type": "string", "name": "fullName" },{ "type": "string", "name": "school" }]
+    }
+  `
+
+  const groupId = 'avro-schema-group';
   const registry = new SchemaRegistry({
     accessKeyId: '',
     accessKeySecret: '',
@@ -19,7 +31,7 @@ import { SchemaType } from '../@types';
   });
 
   // const id = await registry.getLatestSchemaId('examples.RandomTest');
-  const { id } = await registry.register({ type: SchemaType.AVRO, schema });
+  const { id } = await registry.register({ type: SchemaType.AVRO, schema: schemaFromJSON });
 
   // // Encode using the uploaded schema
   const payload = { fullName: 'John Doe', school: 'mid' }
