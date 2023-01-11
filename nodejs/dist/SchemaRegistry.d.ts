@@ -24,7 +24,7 @@ export default class SchemaRegistry {
         accessKeySecret: any;
         groupId: any;
     }, options?: ClientOptions);
-    private checkAndCreateGroupId;
+    private checkAndCreateSchemaGroup;
     private getSchemaOriginRequest;
     private _getSchema;
     encode(uuid: string, payload: any): Promise<any>;

@@ -39,19 +39,19 @@ export default class SchemaRegistry {
         this.cache = new Cache();
     }
 
-    private async checkAndCreateGroupId(groupId: string) {
+    private async checkAndCreateSchemaGroup(groupId: string, schemaType: SchemaType): Promise<string> {
         try {
-            return await this.api.getSchemaGroup(groupId);
+            await this.api.getSchemaGroup(groupId);
         } catch (e) {
-            return await this.api.createSchemaGroup({
+            await this.api.createSchemaGroup({
                 groupId: this.groupId,
-                schemaFormat: SchemaType.AVRO
+                schemaFormat: schemaType
             });
         }
+        return groupId;
     }
 
     private async getSchemaOriginRequest(id: string): Promise<SchemaResponse> {
-        await this.checkAndCreateGroupId(this.groupId);
         if (this.cacheMissRequests[id]) {
             return this.cacheMissRequests[id];
         }
@@ -179,7 +179,8 @@ export default class SchemaRegistry {
             subject = helper.getSubject(eventbridgeSchema, schemaInstance, separator)
         }
         const schemaId = subject.name;
-        const groupId = this.groupId;
+        const schemaType = schema.type as SchemaType;
+        const groupId = await this.checkAndCreateSchemaGroup(this.groupId, schemaType);
         let response;
         try {
             response = await this.api.getSchema({
