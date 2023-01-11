@@ -1,3 +1,4 @@
+import { SchemaType } from './@types';
 export interface ClientConfig {
     accessKeyId: string,
     accessKeySecret: string,
@@ -10,9 +11,7 @@ export interface ClientOptions {
     schemaId?: string,
     uuid?: string
 }
-export const enum SchemaType {
-    AVRO = 'AVRO'
-}
+
 
 export interface SchemaData {
     UpdatedTimestamp: number,
@@ -30,13 +29,20 @@ export interface SchemaData {
 export const enum RequestMethod {
     GET = 'GET',
     POST = 'POST',
-    PUT= 'PUT'
+    PUT = 'PUT'
 }
 export interface ResponseData {
     RequestId: string,
     Data: any,
     Code: string,
     Success: boolean
+}
+
+export interface CreateSchemaGroupRequestPayload {
+    groupId: string,
+    schemaFormat: SchemaType,
+    description?: string,
+    clientToken?: string
 }
 export interface GetSchemaRequestPayload {
     groupId: string,

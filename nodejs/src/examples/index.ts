@@ -22,11 +22,12 @@ import { SchemaRegistry, SchemaType, readAVSCAsync, avdlToAVSCAsync } from '../i
       "fields": [{ "type": "string", "name": "fullName" },{ "type": "string", "name": "school" }]
     }
   `
-
-  const groupId = 'avro-schema-group';
+  const accessKeySecret = '';
+  const accessKeyId = '';
+  const groupId = 'customergroup';
   const registry = new SchemaRegistry({
-    accessKeyId: '',
-    accessKeySecret: '',
+    accessKeyId,
+    accessKeySecret,
     groupId
   });
 

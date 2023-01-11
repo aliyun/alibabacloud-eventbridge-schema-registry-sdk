@@ -1,5 +1,5 @@
 import Core from '@alicloud/pop-core';
-import { ClientConfig, ResponseData, GetSchemaRequestPayload, RequestMethod, ListSchemasResponse, UpdateSchemaRequestConfig, CreateSchemaVersionRequestConfig, CreateSchemaVersionResponseData } from '../@types-ebschema';
+import { ClientConfig, ResponseData, GetSchemaRequestPayload, RequestMethod, ListSchemasResponse, UpdateSchemaRequestConfig, CreateSchemaVersionRequestConfig, CreateSchemaVersionResponseData, CreateSchemaGroupRequestPayload } from '../@types-ebschema';
 import { EventbridgeApiResponseError } from '../errors';
 const DEFAULT_LIMIT_SIZE = 100;
 export default class Api {
@@ -49,12 +49,16 @@ export default class Api {
 
 
 
-    public async createSchemaGroup() {
-
+    public async createSchemaGroup(payload: CreateSchemaGroupRequestPayload) {
+        const response = await this.invokeApi('CreateSchemaGroup', RequestMethod.GET, payload);
+        const _data = this.getResponseData(response);
+        return _data;
     }
 
-    public async getSchemaGroup() {
-
+    public async getSchemaGroup(groupId:string) {
+        const response = await this.invokeApi('getSchemaGroup', RequestMethod.GET, {groupId});
+        const _data = this.getResponseData(response);
+        return _data;
     }
 
     public async updateSchemaGroup() {

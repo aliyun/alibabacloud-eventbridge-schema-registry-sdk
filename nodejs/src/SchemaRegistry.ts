@@ -39,9 +39,19 @@ export default class SchemaRegistry {
         this.cache = new Cache();
     }
 
+    private async checkAndCreateGroupId(groupId: string) {
+        try {
+            return await this.api.getSchemaGroup(groupId);
+        } catch (e) {
+            return await this.api.createSchemaGroup({
+                groupId: this.groupId,
+                schemaFormat: SchemaType.AVRO
+            });
+        }
+    }
 
     private async getSchemaOriginRequest(id: string): Promise<SchemaResponse> {
-
+        await this.checkAndCreateGroupId(this.groupId);
         if (this.cacheMissRequests[id]) {
             return this.cacheMissRequests[id];
         }

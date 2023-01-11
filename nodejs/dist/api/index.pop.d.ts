@@ -1,12 +1,12 @@
-import { ClientConfig, GetSchemaRequestPayload, ListSchemasResponse, UpdateSchemaRequestConfig, CreateSchemaVersionRequestConfig, CreateSchemaVersionResponseData } from '../@types-ebschema';
+import { ClientConfig, GetSchemaRequestPayload, ListSchemasResponse, UpdateSchemaRequestConfig, CreateSchemaVersionRequestConfig, CreateSchemaVersionResponseData, CreateSchemaGroupRequestPayload } from '../@types-ebschema';
 export default class Api {
     private client;
     constructor(config: ClientConfig);
     private createClient;
     private invokeApi;
     private getResponseData;
-    createSchemaGroup(): Promise<void>;
-    getSchemaGroup(): Promise<void>;
+    createSchemaGroup(payload: CreateSchemaGroupRequestPayload): Promise<any>;
+    getSchemaGroup(groupId: string): Promise<any>;
     updateSchemaGroup(): Promise<void>;
     listSchemaGroups(): Promise<any>;
     deleteSchemaGroup(): Promise<void>;
