@@ -22,8 +22,9 @@ import { SchemaRegistry, SchemaType, readAVSCAsync, avdlToAVSCAsync } from '../i
       "fields": [{ "type": "string", "name": "fullName" },{ "type": "string", "name": "school" }]
     }
   `
-  const accessKeySecret = '';
   const accessKeyId = '';
+  const accessKeySecret = '';
+
   const groupId = 'customergroup';
   const registry = new SchemaRegistry({
     accessKeyId,

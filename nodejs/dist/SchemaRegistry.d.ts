@@ -1,7 +1,6 @@
 /// <reference types="node" />
 import { COMPATIBILITY } from './constants';
-import { SchemaType, Schema, AvroSchema, RawAvroSchema, EventbridgeSchema } from './@types';
-import { ClientOptions } from './@types-ebschema';
+import { SchemaType, SchemaRegistryInputParams, Schema, AvroSchema, RawAvroSchema, EventbridgeSchema } from './@types';
 import Cache from './cache';
 interface DecodeOptions {
     [SchemaType.AVRO]?: any;
@@ -15,15 +14,12 @@ interface Opts {
     subject: string;
 }
 export default class SchemaRegistry {
+    private confluentSRInstance;
     private api;
     private groupId;
     cache: Cache;
     private cacheMissRequests;
-    constructor({ accessKeyId, accessKeySecret, groupId }: {
-        accessKeyId: any;
-        accessKeySecret: any;
-        groupId: any;
-    }, options?: ClientOptions);
+    constructor(params: SchemaRegistryInputParams, options?: any);
     private checkAndCreateSchemaGroup;
     private getSchemaOriginRequest;
     private _getSchema;

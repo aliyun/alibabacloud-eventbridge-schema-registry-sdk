@@ -25,6 +25,7 @@
     "@alicloud/pop-core": "1.7.10",
     "@alicloud/tea-typescript": "^1.8.0",
     "@alicloud/tea-util": "^1.4.5",
+    "@kafkajs/confluent-schema-registry": "^3.3.0",
     "ajv": "^7.1.0",
     "avsc": ">= 5.4.13 < 6",
     "uuid-parse": "^1.1.0"

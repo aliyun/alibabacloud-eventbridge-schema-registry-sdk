@@ -1,15 +1,17 @@
 import { Type } from 'avsc';
 
+import { SchemaRegistry as ConfluentSchemaRegistry } from '@kafkajs/confluent-schema-registry';
+
 import {
     EventbridgeSchemaRegistryArgumentError,
     EventbridgeSchemaRegistryValidationError
 } from './errors';
 import { COMPATIBILITY, DEFAULT_SEPERATOR } from './constants'
-import { encode, MAGIC_BYTE } from './common/wireEncoder';
+import { encode, ALICLOUD_MAGIC_BYTE, CONFLUENT_MAGIC_BYTE } from './common/wireEncoder';
 import decode from './common/wireDecoder';
 import API from './api/index.pop';
-import { SchemaType, Schema, AvroSchema, SchemaResponse, RawAvroSchema, EventbridgeSchema, EventbridgeSubject } from './@types';
-import { ClientOptions } from './@types-ebschema';
+import { SchemaType, SchemaRegistryInputParams, Schema, AvroSchema, SchemaResponse, RawAvroSchema, EventbridgeSchema, EventbridgeSubject } from './@types';
+// import { ClientOptions } from './@types-ebschema';
 import { helperTypeFromSchemaType, schemaTypeFromString, schemaFromEventbridgeSchema } from './schemaTypeResolver';
 import Cache from './cache';
 interface DecodeOptions {
@@ -29,14 +31,19 @@ const DEFAULT_OPTS = {
     separator: DEFAULT_SEPERATOR,
 }
 export default class SchemaRegistry {
+    private confluentSRInstance: ConfluentSchemaRegistry;
     private api: API;
     private groupId: string;
     public cache: Cache;
     private cacheMissRequests: { [key: number]: any } = {}
-    constructor({ accessKeyId, accessKeySecret, groupId }, options?: ClientOptions) {
+    constructor(params: SchemaRegistryInputParams, options?: any) {
+        const { host, groupId, accessKeyId, accessKeySecret } = params;
         this.groupId = groupId;
         this.api = new API({ accessKeySecret, accessKeyId });
         this.cache = new Cache();
+        if (host) {
+            this.confluentSRInstance = new ConfluentSchemaRegistry({ host }, options);
+        }
     }
 
     private async checkAndCreateSchemaGroup(groupId: string, schemaType: SchemaType): Promise<string> {
@@ -129,9 +136,11 @@ export default class SchemaRegistry {
             throw new EventbridgeSchemaRegistryArgumentError('Invalid buffer');
         }
         let { magicByte, uuid, payload } = decode(buffer);
-        if (Buffer.compare(MAGIC_BYTE, magicByte) !== 0) {
+        if (Buffer.compare(CONFLUENT_MAGIC_BYTE, magicByte) === 0 && this.confluentSRInstance) {
+            return this.confluentSRInstance.decode(buffer, options);
+        } else if (Buffer.compare(ALICLOUD_MAGIC_BYTE, magicByte) !== 0) {
             throw new EventbridgeSchemaRegistryArgumentError(`Message encoded with magic byte ${JSON.stringify(magicByte)}, expected ${JSON.stringify(
-                MAGIC_BYTE,
+                ALICLOUD_MAGIC_BYTE,
             )}`)
         }
 

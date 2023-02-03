@@ -55,6 +55,12 @@ export interface EventbridgeSubject {
 export interface SchemaResponse extends SchemaData {
     References: SchemaReference[];
 }
+export interface SchemaRegistryInputParams {
+    accessKeyId: string;
+    accessKeySecret: string;
+    groupId: string;
+    host?: string;
+}
 export type EventbridgeSchema = AvroEventbridgeSchema;
 declare global {
     namespace jest {
