@@ -25,7 +25,7 @@ import { SchemaRegistry, SchemaType, readAVSCAsync, avdlToAVSCAsync } from '../i
   const accessKeyId = '';
   const accessKeySecret = '';
 
-  const groupId = 'customergroup';
+  const groupId = 'test-group';
   const registry = new SchemaRegistry({
     accessKeyId,
     accessKeySecret,
