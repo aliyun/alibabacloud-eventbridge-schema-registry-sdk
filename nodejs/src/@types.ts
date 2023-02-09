@@ -76,6 +76,7 @@ export interface SchemaRegistryInputParams {
   accessKeyId: string,
   accessKeySecret: string,
   groupId: string,
+  endpoint?: string,
   host?: string
 }
 

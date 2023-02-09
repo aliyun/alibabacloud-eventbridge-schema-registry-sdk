@@ -37,9 +37,9 @@ export default class SchemaRegistry {
     public cache: Cache;
     private cacheMissRequests: { [key: number]: any } = {}
     constructor(params: SchemaRegistryInputParams, options?: any) {
-        const { host, groupId, accessKeyId, accessKeySecret } = params;
+        const { host, groupId, accessKeyId, accessKeySecret, endpoint } = params;
         this.groupId = groupId;
-        this.api = new API({ accessKeySecret, accessKeyId });
+        this.api = new API({ accessKeySecret, accessKeyId, endpoint });
         this.cache = new Cache();
         if (host) {
             this.confluentSRInstance = new ConfluentSchemaRegistry({ host }, options);

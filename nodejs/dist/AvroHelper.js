@@ -1,81 +1,67 @@
 "use strict";
-var __assign = (this && this.__assign) || function () {
-    __assign = Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
-    };
-    return __assign.apply(this, arguments);
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var errors_1 = require("./errors");
-var avsc_1 = __importDefault(require("avsc"));
-var _types_1 = require("./@types");
-var AvroHelper = /** @class */ (function () {
-    function AvroHelper() {
-    }
-    AvroHelper.prototype.getRawAvroSchema = function (schema) {
+const errors_1 = require("./errors");
+const avsc_1 = __importDefault(require("avsc"));
+const _types_1 = require("./@types");
+class AvroHelper {
+    getRawAvroSchema(schema) {
         return (typeof schema.schema === 'string'
             ? JSON.parse(schema.schema)
             : schema.schema);
-    };
-    AvroHelper.prototype.getAvroSchema = function (schema, opts) {
-        var _this = this;
-        var rawSchema = this.isRawAvroSchema(schema)
+    }
+    getAvroSchema(schema, opts) {
+        const rawSchema = this.isRawAvroSchema(schema)
             ? schema
             : this.getRawAvroSchema(schema);
         // @ts-ignore TODO: Fix typings for Schema...
-        var addReferencedSchemas = function (userHook) { return function (schema, opts) {
+        const addReferencedSchemas = (userHook) => (schema, opts) => {
             var _a;
-            var avroOpts = opts;
-            (_a = avroOpts === null || avroOpts === void 0 ? void 0 : avroOpts.referencedSchemas) === null || _a === void 0 ? void 0 : _a.forEach(function (subSchema) {
-                var rawSubSchema = _this.getRawAvroSchema(subSchema);
+            const avroOpts = opts;
+            (_a = avroOpts === null || avroOpts === void 0 ? void 0 : avroOpts.referencedSchemas) === null || _a === void 0 ? void 0 : _a.forEach(subSchema => {
+                const rawSubSchema = this.getRawAvroSchema(subSchema);
                 avroOpts.typeHook = userHook;
                 avsc_1.default.Type.forSchema(rawSubSchema, avroOpts);
             });
             if (userHook) {
                 return userHook(schema, opts);
             }
-        }; };
-        var avroSchema = avsc_1.default.Type.forSchema(rawSchema, __assign(__assign({}, opts), { typeHook: addReferencedSchemas(opts === null || opts === void 0 ? void 0 : opts.typeHook) }));
+        };
+        const avroSchema = avsc_1.default.Type.forSchema(rawSchema, {
+            ...opts,
+            typeHook: addReferencedSchemas(opts === null || opts === void 0 ? void 0 : opts.typeHook),
+        });
         return avroSchema;
-    };
-    AvroHelper.prototype.validate = function (avroSchema) {
+    }
+    validate(avroSchema) {
         if (!avroSchema.name) {
-            throw new errors_1.EventbridgeSchemaRegistryArgumentError("Invalid name: ".concat(avroSchema.name));
+            throw new errors_1.EventbridgeSchemaRegistryArgumentError(`Invalid name: ${avroSchema.name}`);
         }
-    };
-    AvroHelper.prototype.getSubject = function (schema, 
+    }
+    getSubject(schema, 
     // @ts-ignore
     avroSchema, separator) {
-        var rawSchema = this.getRawAvroSchema(schema);
+        const rawSchema = this.getRawAvroSchema(schema);
         if (!rawSchema.namespace) {
-            throw new errors_1.EventbridgeSchemaRegistryArgumentError("Invalid namespace: ".concat(rawSchema.namespace));
+            throw new errors_1.EventbridgeSchemaRegistryArgumentError(`Invalid namespace: ${rawSchema.namespace}`);
         }
-        var subject = {
+        const subject = {
             name: [rawSchema.namespace, rawSchema.name].join(separator),
         };
         return subject;
-    };
-    AvroHelper.prototype.isRawAvroSchema = function (schema) {
-        var asRawAvroSchema = schema;
+    }
+    isRawAvroSchema(schema) {
+        const asRawAvroSchema = schema;
         return asRawAvroSchema.name != null && asRawAvroSchema.type != null;
-    };
-    AvroHelper.prototype.toEventbridgeSchema = function (data) {
+    }
+    toEventbridgeSchema(data) {
         return { type: _types_1.SchemaType.AVRO, schema: data.Content.replace(/\&quot\;/g, '\"'), references: data.References };
-    };
-    AvroHelper.prototype.updateOptionsFromSchemaReferences = function (referencedSchemas, options) {
-        var _a;
-        if (options === void 0) { options = {}; }
-        return __assign(__assign({}, options), (_a = {}, _a[_types_1.SchemaType.AVRO] = __assign(__assign({}, options[_types_1.SchemaType.AVRO]), { referencedSchemas: referencedSchemas }), _a));
-    };
-    return AvroHelper;
-}());
+    }
+    updateOptionsFromSchemaReferences(referencedSchemas, options = {}) {
+        return { ...options, [_types_1.SchemaType.AVRO]: { ...options[_types_1.SchemaType.AVRO], referencedSchemas } };
+    }
+}
 exports.default = AvroHelper;
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiQXZyb0hlbHBlci5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uL3NyYy9BdnJvSGVscGVyLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7Ozs7Ozs7Ozs7Ozs7Ozs7QUFVQSxtQ0FBaUU7QUFDakUsOENBQTJEO0FBQzNELG1DQUFxRDtBQUdyRDtJQUFBO0lBdUVBLENBQUM7SUF0RVMscUNBQWdCLEdBQXhCLFVBQXlCLE1BQXlCO1FBQ2hELE9BQU8sQ0FBQyxPQUFPLE1BQU0sQ0FBQyxNQUFNLEtBQUssUUFBUTtZQUN2QyxDQUFDLENBQUMsSUFBSSxDQUFDLEtBQUssQ0FBQyxNQUFNLENBQUMsTUFBTSxDQUFDO1lBQzNCLENBQUMsQ0FBQyxNQUFNLENBQUMsTUFBTSxDQUFrQixDQUFBO0lBQ3JDLENBQUM7SUFFTSxrQ0FBYSxHQUFwQixVQUFxQixNQUF5QyxFQUFFLElBQWtCO1FBQWxGLGlCQXdCQztRQXZCQyxJQUFNLFNBQVMsR0FBa0IsSUFBSSxDQUFDLGVBQWUsQ0FBQyxNQUFNLENBQUM7WUFDM0QsQ0FBQyxDQUFDLE1BQU07WUFDUixDQUFDLENBQUMsSUFBSSxDQUFDLGdCQUFnQixDQUFDLE1BQU0sQ0FBQyxDQUFBO1FBQ2pDLDZDQUE2QztRQUM3QyxJQUFNLG9CQUFvQixHQUFHLFVBQUMsUUFBbUIsSUFBZSxPQUFBLFVBQzlELE1BQW1CLEVBQ25CLElBQXNCOztZQUV0QixJQUFNLFFBQVEsR0FBRyxJQUFtQixDQUFBO1lBQ3BDLE1BQUEsUUFBUSxhQUFSLFFBQVEsdUJBQVIsUUFBUSxDQUFFLGlCQUFpQiwwQ0FBRSxPQUFPLENBQUMsVUFBQSxTQUFTO2dCQUM1QyxJQUFNLFlBQVksR0FBRyxLQUFJLENBQUMsZ0JBQWdCLENBQUMsU0FBUyxDQUFDLENBQUE7Z0JBQ3JELFFBQVEsQ0FBQyxRQUFRLEdBQUcsUUFBUSxDQUFBO2dCQUM1QixjQUFJLENBQUMsSUFBSSxDQUFDLFNBQVMsQ0FBQyxZQUFZLEVBQUUsUUFBUSxDQUFDLENBQUE7WUFDN0MsQ0FBQyxDQUFDLENBQUE7WUFDRixJQUFJLFFBQVEsRUFBRTtnQkFDWixPQUFPLFFBQVEsQ0FBQyxNQUFNLEVBQUUsSUFBSSxDQUFDLENBQUE7YUFDOUI7UUFDSCxDQUFDLEVBYitELENBYS9ELENBQUE7UUFDRCxJQUFNLFVBQVUsR0FBRyxjQUFJLENBQUMsSUFBSSxDQUFDLFNBQVMsQ0FBQyxTQUFTLHdCQUMzQyxJQUFJLEtBQ1AsUUFBUSxFQUFFLG9CQUFvQixDQUFDLElBQUksYUFBSixJQUFJLHVCQUFKLElBQUksQ0FBRSxRQUFRLENBQUMsSUFDOUMsQ0FBQTtRQUNGLE9BQU8sVUFBVSxDQUFBO0lBQ25CLENBQUM7SUFFTSw2QkFBUSxHQUFmLFVBQWdCLFVBQXNCO1FBQ3BDLElBQUksQ0FBQyxVQUFVLENBQUMsSUFBSSxFQUFFO1lBQ3BCLE1BQU0sSUFBSSwrQ0FBc0MsQ0FBQyx3QkFBaUIsVUFBVSxDQUFDLElBQUksQ0FBRSxDQUFDLENBQUE7U0FDckY7SUFDSCxDQUFDO0lBQ00sK0JBQVUsR0FBakIsVUFDRSxNQUE2QjtJQUM3QixhQUFhO0lBQ2IsVUFBc0IsRUFDdEIsU0FBaUI7UUFFakIsSUFBTSxTQUFTLEdBQWtCLElBQUksQ0FBQyxnQkFBZ0IsQ0FBQyxNQUFNLENBQUMsQ0FBQTtRQUU5RCxJQUFJLENBQUMsU0FBUyxDQUFDLFNBQVMsRUFBRTtZQUN4QixNQUFNLElBQUksK0NBQXNDLENBQUMsNkJBQXNCLFNBQVMsQ0FBQyxTQUFTLENBQUUsQ0FBQyxDQUFBO1NBQzlGO1FBRUQsSUFBTSxPQUFPLEdBQXVCO1lBQ2xDLElBQUksRUFBRSxDQUFDLFNBQVMsQ0FBQyxTQUFTLEVBQUUsU0FBUyxDQUFDLElBQUksQ0FBQyxDQUFDLElBQUksQ0FBQyxTQUFTLENBQUM7U0FDNUQsQ0FBQTtRQUNELE9BQU8sT0FBTyxDQUFBO0lBQ2hCLENBQUM7SUFFTyxvQ0FBZSxHQUF2QixVQUF3QixNQUF5QztRQUMvRCxJQUFNLGVBQWUsR0FBRyxNQUF1QixDQUFBO1FBQy9DLE9BQU8sZUFBZSxDQUFDLElBQUksSUFBSSxJQUFJLElBQUksZUFBZSxDQUFDLElBQUksSUFBSSxJQUFJLENBQUE7SUFDckUsQ0FBQztJQUVNLHdDQUFtQixHQUExQixVQUEyQixJQUFvQjtRQUM3QyxPQUFPLEVBQUUsSUFBSSxFQUFFLG1CQUFVLENBQUMsSUFBSSxFQUFFLE1BQU0sRUFBRSxJQUFJLENBQUMsT0FBTyxDQUFDLE9BQU8sQ0FBQyxXQUFXLEVBQUUsSUFBSSxDQUFDLEVBQUUsVUFBVSxFQUFFLElBQUksQ0FBQyxVQUFVLEVBQUUsQ0FBQTtJQUNoSCxDQUFDO0lBRUQsc0RBQWlDLEdBQWpDLFVBQ0UsaUJBQTBDLEVBQzFDLE9BQTZCOztRQUE3Qix3QkFBQSxFQUFBLFlBQTZCO1FBRTdCLDZCQUFZLE9BQU8sZ0JBQUcsbUJBQVUsQ0FBQyxJQUFJLDBCQUFRLE9BQU8sQ0FBQyxtQkFBVSxDQUFDLElBQUksQ0FBQyxLQUFFLGlCQUFpQixtQkFBQSxVQUFJO0lBQzlGLENBQUM7SUFDSCxpQkFBQztBQUFELENBQUMsQUF2RUQsSUF1RUMifQ==
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiQXZyb0hlbHBlci5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uL3NyYy9BdnJvSGVscGVyLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7Ozs7O0FBVUEscUNBQWlFO0FBQ2pFLGdEQUEyRDtBQUMzRCxxQ0FBcUQ7QUFHckQsTUFBcUIsVUFBVTtJQUNyQixnQkFBZ0IsQ0FBQyxNQUF5QjtRQUNoRCxPQUFPLENBQUMsT0FBTyxNQUFNLENBQUMsTUFBTSxLQUFLLFFBQVE7WUFDdkMsQ0FBQyxDQUFDLElBQUksQ0FBQyxLQUFLLENBQUMsTUFBTSxDQUFDLE1BQU0sQ0FBQztZQUMzQixDQUFDLENBQUMsTUFBTSxDQUFDLE1BQU0sQ0FBa0IsQ0FBQTtJQUNyQyxDQUFDO0lBRU0sYUFBYSxDQUFDLE1BQXlDLEVBQUUsSUFBa0I7UUFDaEYsTUFBTSxTQUFTLEdBQWtCLElBQUksQ0FBQyxlQUFlLENBQUMsTUFBTSxDQUFDO1lBQzNELENBQUMsQ0FBQyxNQUFNO1lBQ1IsQ0FBQyxDQUFDLElBQUksQ0FBQyxnQkFBZ0IsQ0FBQyxNQUFNLENBQUMsQ0FBQTtRQUNqQyw2Q0FBNkM7UUFDN0MsTUFBTSxvQkFBb0IsR0FBRyxDQUFDLFFBQW1CLEVBQVksRUFBRSxDQUFDLENBQzlELE1BQW1CLEVBQ25CLElBQXNCLEVBQ3RCLEVBQUU7O1lBQ0YsTUFBTSxRQUFRLEdBQUcsSUFBbUIsQ0FBQTtZQUNwQyxNQUFBLFFBQVEsYUFBUixRQUFRLHVCQUFSLFFBQVEsQ0FBRSxpQkFBaUIsMENBQUUsT0FBTyxDQUFDLFNBQVMsQ0FBQyxFQUFFO2dCQUMvQyxNQUFNLFlBQVksR0FBRyxJQUFJLENBQUMsZ0JBQWdCLENBQUMsU0FBUyxDQUFDLENBQUE7Z0JBQ3JELFFBQVEsQ0FBQyxRQUFRLEdBQUcsUUFBUSxDQUFBO2dCQUM1QixjQUFJLENBQUMsSUFBSSxDQUFDLFNBQVMsQ0FBQyxZQUFZLEVBQUUsUUFBUSxDQUFDLENBQUE7WUFDN0MsQ0FBQyxDQUFDLENBQUE7WUFDRixJQUFJLFFBQVEsRUFBRTtnQkFDWixPQUFPLFFBQVEsQ0FBQyxNQUFNLEVBQUUsSUFBSSxDQUFDLENBQUE7YUFDOUI7UUFDSCxDQUFDLENBQUE7UUFDRCxNQUFNLFVBQVUsR0FBRyxjQUFJLENBQUMsSUFBSSxDQUFDLFNBQVMsQ0FBQyxTQUFTLEVBQUU7WUFDaEQsR0FBRyxJQUFJO1lBQ1AsUUFBUSxFQUFFLG9CQUFvQixDQUFDLElBQUksYUFBSixJQUFJLHVCQUFKLElBQUksQ0FBRSxRQUFRLENBQUM7U0FDL0MsQ0FBQyxDQUFBO1FBQ0YsT0FBTyxVQUFVLENBQUE7SUFDbkIsQ0FBQztJQUVNLFFBQVEsQ0FBQyxVQUFzQjtRQUNwQyxJQUFJLENBQUMsVUFBVSxDQUFDLElBQUksRUFBRTtZQUNwQixNQUFNLElBQUksK0NBQXNDLENBQUMsaUJBQWlCLFVBQVUsQ0FBQyxJQUFJLEVBQUUsQ0FBQyxDQUFBO1NBQ3JGO0lBQ0gsQ0FBQztJQUNNLFVBQVUsQ0FDZixNQUE2QjtJQUM3QixhQUFhO0lBQ2IsVUFBc0IsRUFDdEIsU0FBaUI7UUFFakIsTUFBTSxTQUFTLEdBQWtCLElBQUksQ0FBQyxnQkFBZ0IsQ0FBQyxNQUFNLENBQUMsQ0FBQTtRQUU5RCxJQUFJLENBQUMsU0FBUyxDQUFDLFNBQVMsRUFBRTtZQUN4QixNQUFNLElBQUksK0NBQXNDLENBQUMsc0JBQXNCLFNBQVMsQ0FBQyxTQUFTLEVBQUUsQ0FBQyxDQUFBO1NBQzlGO1FBRUQsTUFBTSxPQUFPLEdBQXVCO1lBQ2xDLElBQUksRUFBRSxDQUFDLFNBQVMsQ0FBQyxTQUFTLEVBQUUsU0FBUyxDQUFDLElBQUksQ0FBQyxDQUFDLElBQUksQ0FBQyxTQUFTLENBQUM7U0FDNUQsQ0FBQTtRQUNELE9BQU8sT0FBTyxDQUFBO0lBQ2hCLENBQUM7SUFFTyxlQUFlLENBQUMsTUFBeUM7UUFDL0QsTUFBTSxlQUFlLEdBQUcsTUFBdUIsQ0FBQTtRQUMvQyxPQUFPLGVBQWUsQ0FBQyxJQUFJLElBQUksSUFBSSxJQUFJLGVBQWUsQ0FBQyxJQUFJLElBQUksSUFBSSxDQUFBO0lBQ3JFLENBQUM7SUFFTSxtQkFBbUIsQ0FBQyxJQUFvQjtRQUM3QyxPQUFPLEVBQUUsSUFBSSxFQUFFLG1CQUFVLENBQUMsSUFBSSxFQUFFLE1BQU0sRUFBRSxJQUFJLENBQUMsT0FBTyxDQUFDLE9BQU8sQ0FBQyxXQUFXLEVBQUUsSUFBSSxDQUFDLEVBQUUsVUFBVSxFQUFFLElBQUksQ0FBQyxVQUFVLEVBQUUsQ0FBQTtJQUNoSCxDQUFDO0lBRUQsaUNBQWlDLENBQy9CLGlCQUEwQyxFQUMxQyxVQUEyQixFQUFFO1FBRTdCLE9BQU8sRUFBRSxHQUFHLE9BQU8sRUFBRSxDQUFDLG1CQUFVLENBQUMsSUFBSSxDQUFDLEVBQUUsRUFBRSxHQUFHLE9BQU8sQ0FBQyxtQkFBVSxDQUFDLElBQUksQ0FBQyxFQUFFLGlCQUFpQixFQUFFLEVBQUUsQ0FBQTtJQUM5RixDQUFDO0NBQ0Y7QUF2RUQsNkJBdUVDIn0=

@@ -11,11 +11,11 @@ export default class Api {
 
     private createClient(data: ClientConfig) {
         if (!this.client) {
-            const { accessKeyId, accessKeySecret } = data;
+            const { accessKeyId, accessKeySecret, endpoint = 'https://eventbridge-console-share.ap-southeast-3.aliyuncs.com/' } = data;
             this.client = new Core({
                 accessKeyId,
                 accessKeySecret,
-                endpoint: 'https://eventbridge-console-share.cn-hangzhou.aliyuncs.com/',
+                endpoint,
                 apiVersion: '2020-05-01'
             });
         }
@@ -55,8 +55,8 @@ export default class Api {
         return _data;
     }
 
-    public async getSchemaGroup(groupId:string) {
-        const response = await this.invokeApi('getSchemaGroup', RequestMethod.GET, {groupId});
+    public async getSchemaGroup(groupId: string) {
+        const response = await this.invokeApi('getSchemaGroup', RequestMethod.GET, { groupId });
         const _data = this.getResponseData(response);
         return _data;
     }

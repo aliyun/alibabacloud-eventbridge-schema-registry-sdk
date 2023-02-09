@@ -24,7 +24,8 @@ const schema = `
 const registry = new SchemaRegistry({
     accessKeyId: '<your ak>',
     accessKeySecret: '<your sk>',
-    groupId
+    groupId,
+    endpoint: 'https://eventbridge-console-share.ap-southeast-3.aliyuncs.com/' // 阿里云接入点，默认值为 https://eventbridge-console-share.ap-southeast-3.aliyuncs.com/
 });
 
 const { id } = await registry.register({ type: SchemaType.AVRO, schema });
@@ -49,7 +50,8 @@ const groupId = 'avro-schema-group';
 const registry = new SchemaRegistry({
     accessKeyId: '<your ak>',
     accessKeySecret: '<your sk>',
-    groupId
+    groupId,
+    endpoint: 'https://eventbridge-console-share.ap-southeast-3.aliyuncs.com/' // 阿里云接入点，默认值为 https://eventbridge-console-share.ap-southeast-3.aliyuncs.com/
 });
 
 const id = await registry.getLatestSchemaId('examples.RandomTest');
@@ -81,7 +83,8 @@ const schema = `
 const registry = new SchemaRegistry({
     accessKeyId: '<your ak>',
     accessKeySecret: '<your sk>',
-    groupId
+    groupId,
+    endpoint: 'https://eventbridge-console-share.ap-southeast-3.aliyuncs.com/' // 阿里云接入点，默认值为 https://eventbridge-console-share.ap-southeast-3.aliyuncs.com/
 });
 
 const {id} = await registry.getRegistryIdBySchema('examples.RandomTest',schema);
@@ -114,6 +117,7 @@ const registry = new SchemaRegistry({
     accessKeyId: '<your ak>',
     accessKeySecret: '<your sk>',
     groupId,
+    endpoint: 'https://eventbridge-console-share.ap-southeast-3.aliyuncs.com/' // 阿里云接入点，默认值为 https://eventbridge-console-share.ap-southeast-3.aliyuncs.com/,
     host: '<confluent schema registry host>'
 });
 

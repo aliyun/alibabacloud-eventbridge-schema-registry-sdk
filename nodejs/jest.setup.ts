@@ -1,4 +1,4 @@
-import { MAGIC_BYTE } from './src/common/wireEncoder'
+import { ALICLOUD_MAGIC_BYTE as MAGIC_BYTE } from './src/common/wireEncoder'
 import decode from './src/common/wireDecoder'
 
 const toMatchEventbridgeEncodedPayload = context => (received, { payload: expectedPayload }) => {
