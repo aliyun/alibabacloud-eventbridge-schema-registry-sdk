@@ -11,12 +11,12 @@ export default class Api {
 
     private createClient(data: ClientConfig) {
         if (!this.client) {
-            const { accessKeyId, accessKeySecret, endpoint = 'https://eventbridge-console-share.ap-southeast-3.aliyuncs.com/' } = data;
+            const { accessKeyId, accessKeySecret, endpoint = 'https://eventbridge-console.ap-southeast-3.aliyuncs.com/', apiVersion = '2020-04-01' } = data;
             this.client = new Core({
                 accessKeyId,
                 accessKeySecret,
                 endpoint,
-                apiVersion: '2020-05-01'
+                apiVersion
             });
         }
         return this.client;
